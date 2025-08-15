@@ -1,0 +1,459 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rajath Hebbar - Fashion Model Portfolio</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"> 
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap');
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #0c0c0c 0%, #1a1a1a 100%);
+            color: #ffffff;
+            overflow-x: hidden;
+        }
+        
+        .gradient-text {
+            background: linear-gradient(45deg, #ff6b6b, #4ecdc4, #45b7d1);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: gradient-shift 3s ease-in-out infinite;
+        }
+        
+        @keyframes gradient-shift {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+        
+        .nav-glass {
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .card-hover {
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        
+        .card-hover:hover {
+            transform: translateY(-10px) scale(1.02);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+        }
+        
+        .photo-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            padding: 20px;
+        }
+        
+        .photo-item {
+            position: relative;
+            height: 400px;
+            background: linear-gradient(135deg, #2d2d2d, #1a1a1a);
+            border-radius: 15px;
+            overflow: hidden;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .photo-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.3s ease;
+        }
+        
+        .photo-item:hover img {
+            transform: scale(1.1);
+        }
+        
+        .photo-overlay {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: linear-gradient(transparent, rgba(0, 0, 0, 0.8));
+            padding: 20px;
+            transform: translateY(100%);
+            transition: transform 0.3s ease;
+        }
+        
+        .photo-item:hover .photo-overlay {
+            transform: translateY(0);
+        }
+        
+        .hero-section {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            background: radial-gradient(circle at 50% 50%, rgba(76, 175, 80, 0.1) 0%, transparent 50%);
+        }
+        
+        .floating-elements {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            pointer-events: none;
+        }
+        
+        .floating-element {
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            background: linear-gradient(45deg, #ff6b6b, #4ecdc4);
+            border-radius: 50%;
+            animation: float 6s ease-in-out infinite;
+        }
+        
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-20px) rotate(180deg); }
+        }
+        
+        .section-title {
+            font-size: 3rem;
+            font-weight: 800;
+            text-align: center;
+            margin-bottom: 3rem;
+            position: relative;
+        }
+        
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 4px;
+            background: linear-gradient(45deg, #ff6b6b, #4ecdc4);
+            border-radius: 2px;
+        }
+        
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.9);
+            z-index: 1000;
+            backdrop-filter: blur(5px);
+        }
+        
+        .modal-content {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            max-width: 90%;
+            max-height: 90%;
+        }
+        
+        .modal img {
+            width: 100%;
+            height: auto;
+            border-radius: 10px;
+        }
+        
+        .close-modal {
+            position: absolute;
+            top: 20px;
+            right: 30px;
+            font-size: 2rem;
+            color: white;
+            cursor: pointer;
+            z-index: 1001;
+        }
+        
+        @media (max-width: 768px) {
+            .section-title {
+                font-size: 2rem;
+            }
+            
+            .photo-grid {
+                grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+                gap: 15px;
+                padding: 15px;
+            }
+            
+            .photo-item {
+                height: 300px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="nav-glass fixed w-full top-0 z-50">
+        <div class="container mx-auto px-6 py-4">
+            <div class="flex justify-between items-center">
+                <div class="text-2xl font-bold gradient-text">Rajath Hebbar</div>
+                <div class="hidden md:flex space-x-8">
+                    <a href="#home" class="nav-link text-white hover:text-gray-300 transition-colors duration-300">Home</a>
+                    <a href="#portfolio" class="nav-link text-white hover:text-gray-300 transition-colors duration-300">Portfolio</a>
+                    <a href="#about" class="nav-link text-white hover:text-gray-300 transition-colors duration-300">About</a>
+                    <a href="#contact" class="nav-link text-white hover:text-gray-300 transition-colors duration-300">Contact</a>
+                </div>
+                <div class="md:hidden">
+                    <button id="mobile-menu-btn" class="text-white focus:outline-none">
+                        <i class="fas fa-bars text-xl"></i>
+                    </button>
+                </div>
+            </div>
+            <div id="mobile-menu" class="md:hidden hidden mt-4 space-y-4">
+                <a href="#home" class="block text-white hover:text-gray-300 transition-colors duration-300">Home</a>
+                <a href="#portfolio" class="block text-white hover:text-gray-300 transition-colors duration-300">Portfolio</a>
+                <a href="#about" class="block text-white hover:text-gray-300 transition-colors duration-300">About</a>
+                <a href="#contact" class="block text-white hover:text-gray-300 transition-colors duration-300">Contact</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section id="home" class="hero-section">
+        <div class="floating-elements">
+            <div class="floating-element" style="top: 20%; left: 10%; animation-delay: 0s;"></div>
+            <div class="floating-element" style="top: 60%; left: 80%; animation-delay: 2s;"></div>
+            <div class="floating-element" style="top: 80%; left: 20%; animation-delay: 4s;"></div>
+        </div>
+        <div class="text-center z-10 relative px-6">
+            <h1 class="text-6xl md:text-8xl font-black mb-6 gradient-text">RAJATH HEBBAR</h1>
+            <p class="text-xl md:text-2xl mb-8 text-gray-300 font-light">Fashion Model & Creative Artist</p>
+            <p class="text-lg mb-12 text-gray-400 max-w-2xl mx-auto leading-relaxed">
+                Capturing elegance through the lens of fashion. Every pose tells a story, every look defines a moment.
+            </p>
+            <button onclick="scrollToSection('portfolio')" class="bg-gradient-to-r from-pink-500 to-purple-600 px-8 py-4 rounded-full text-white font-semibold hover:shadow-lg transform hover:scale-105 transition-all duration-300">
+                View Portfolio
+            </button>
+        </div>
+    </section>
+
+    <!-- Portfolio Section -->
+    <section id="portfolio" class="py-20 px-6">
+        <div class="container mx-auto">
+            <h2 class="section-title gradient-text">Portfolio</h2>
+            <div class="photo-grid">
+                <div class="photo-item card-hover" onclick="openModal(this)">
+                    <img src="IMG-20250609-WA0007.jpg" alt="Professional fashion portrait of male model" />
+                    <div class="photo-overlay">
+                        <h3 class="text-lg font-semibold mb-2">Black formal</h3>
+                        <p class="text-gray-300">street fashion</p>
+                    </div>
+                </div>
+                
+                <div class="photo-item card-hover" onclick="openModal(this)">
+                    <img src="IMG-20250727-WA0007.jpg" alt="Elegant male model" />
+                    <div class="photo-overlay">
+                        <h3 class="text-lg font-semibold mb-2">casual wear</h3>
+                        <p class="text-gray-300">brown sweashirt attire</p>
+                    </div>
+                </div>
+                
+                <div class="photo-item card-hover" onclick="openModal(this)">
+                    <img src="IMG-20250802-WA0011.jpg" alt="male model" />
+                    <div class="photo-overlay">
+                        <h3 class="text-lg font-semibold mb-2">Casual Cool</h3>
+                        <p class="text-gray-300">Relaxed everyday style</p>
+                    </div>
+                </div>
+                
+                <div class="photo-item card-hover" onclick="openModal(this)">
+                    <img src="IMG-20250815-WA0030.jpg" alt="male model" />
+                    <div class="photo-overlay">
+                        <h3 class="text-lg font-semibold mb-2">Formal Wear</h3>
+                        <p class="text-gray-300">Performance meets style</p>
+                    </div>
+                </div>
+                
+                <div class="photo-item card-hover" onclick="openModal(this)">
+                    <img src="IMG-20250815-WA0031.jpg" alt="male model" />
+                    <div class="photo-overlay">
+                        <h3 class="text-lg font-semibold mb-2">Classic Fashion</h3>
+                        <p class="text-gray-300">black and white</p>
+                    </div>
+                </div>
+                
+                <div class="photo-item card-hover" onclick="openModal(this)">
+                    <img src="IMG-20250815-WA0032.jpg" alt="Male model" />
+                    <div class="photo-overlay">
+                        <h3 class="text-lg font-semibold mb-2">cool Vibes</h3>
+                        <p class="text-gray-300"> inspired looks</p>
+                    </div>
+                </div>
+                
+                <div class="photo-item card-hover" onclick="openModal(this)">
+                    <img src="IMG-20250815-WA0033.jpg" alt="Formal male model" />
+                    <div class="photo-overlay">
+                        <h3 class="text-lg font-semibold mb-2">stylish pose</h3>
+                        <p class="text-gray-300">elegance</p>
+                    </div>
+                </div>
+                
+                <div class="photo-item card-hover" onclick="openModal(this)">
+                    <img src="IMG-20250815-WA0035.jpg" alt="fashion male model" />
+                    <div class="photo-overlay">
+                        <h3 class="text-lg font-semibold mb-2">casual looks</h3>
+                        <p class="text-gray-300"> lifestyle</p>
+                    </div>
+                </div>
+                
+                <div class="photo-item card-hover" onclick="openModal(this)">
+                    <img src="IMG-20250815-WA0036.jpg" alt="male model" />
+                    <div class="photo-overlay">
+                        <h3 class="text-lg font-semibold mb-2">sun rays with black formal</h3>
+                        <p class="text-gray-300">powerful</p>
+                    </div>
+                </div>
+                
+                <div class="photo-item card-hover" onclick="openModal(this)">
+                    <img src="IMG-20250815-WA0037.jpg" alt="Professional male model" />
+                    <div class="photo-overlay">
+                        <h3 class="text-lg font-semibold mb-2">Corporate Style</h3>
+                        <p class="text-gray-300"> professional</p>
+                    </div>
+                </div>
+                
+                <div class="photo-item card-hover" onclick="openModal(this)">
+                    <img src="IMG-20250815-WA0038.jpg" alt="Male model" />
+                    <div class="photo-overlay">
+                        <h3 class="text-lg font-semibold mb-2">Artistic Soul</h3>
+                        <p class="text-gray-300">Creative</p>
+                    </div>
+                </div>
+                
+                <div class="photo-item card-hover" onclick="openModal(this)">
+                    <img src="IMG-20250815-WA0039.jpg" alt="Rugged male model" />
+                    <div class="photo-overlay">
+                        <h3 class="text-lg font-semibold mb-2">Industrial Edge</h3>
+                        <p class="text-gray-300">Urban masculinity</p>
+                    </div>
+                </div>
+                
+                <div class="photo-item card-hover" onclick="openModal(this)">
+                    <img src="IMG-20250815-WA0040.jpg" alt="Male model" />
+                    <div class="photo-overlay">
+                        <h3 class="text-lg font-semibold mb-2"> Lifestyle</h3>
+                        <p class="text-gray-300">Sophisticated living</p>
+                    </div>
+                </div>
+                
+                <div class="photo-item card-hover" onclick="openModal(this)">
+                    <img src="IMG-20250815-WA0041.jpg" alt="male model" />
+                    <div class="photo-overlay">
+                        <h3 class="text-lg font-semibold mb-2">spiritual Focus</h3>
+                        <p class="text-gray-300">Mind and body harmony</p>
+                    </div>
+                </div>
+                
+                <div class="photo-item card-hover" onclick="openModal(this)">
+                    <img src="IMG-20250815-WA0042.jpg" alt="Male model" />
+                    <div class="photo-overlay">
+                        <h3 class="text-lg font-semibold mb-2">Alpine Luxury</h3>
+                        <p class="text-gray-300">collection premiere</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="py-20 px-6 bg-gradient-to-b from-transparent to-gray-900">
+        <div class="container mx-auto max-w-4xl">
+            <h2 class="section-title gradient-text">About</h2>
+            <div class="text-center">
+                <div class="mb-12">
+                    <img src="AI generated.jpg" alt="Professional headshot of Rajath Hebbar" class="w-64 h-80 object-cover rounded-2xl mx-auto mb-8 border-4 border-gray-600" />
+                </div>
+                <div class="text-lg leading-relaxed text-gray-300 space-y-6">
+                    <p>
+                        New to  the fashion industry,  established Myself as a versatile and compelling model, working with renowned photographers and designers across the globe.
+                    </p>
+                    <p>
+                        Born and raised with a passion for artistic expression,  brings a unique blend of classical elegance and contemporary edge to every shoot. His diverse portfolio spans from high-fashion editorials to commercial campaigns, showcasing his adaptability and professional excellence.
+                    </p>
+                    <p>
+                        When not in front of the camera,  dedicates my time to fitness, travel, and exploring new creative collaborations that push the boundaries of fashion photography.
+                    </p>
+                </div>
+                
+                <div class="mt-12 grid grid-cols-1 md:grid-cols-3 gap-8">
+                    <div class="bg-gray-800 bg-opacity-50 p-6 rounded-lg">
+                        <h3 class="text-2xl font-bold gradient-text mb-2">100+</h3>
+                        <p class="text-gray-300"> PhotoShoots</p>
+                    </div>
+                    <div class="bg-gray-800 bg-opacity-50 p-6 rounded-lg">
+                        <h3 class="text-2xl font-bold gradient-text mb-2">0</h3>
+                        <p class="text-gray-300">Brand Collaborations</p>
+                    </div>
+                    <div class="bg-gray-800 bg-opacity-50 p-6 rounded-lg">
+                        <h3 class="text-2xl font-bold gradient-text mb-2">Fresher</h3>
+                        <p class="text-gray-300"></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="py-20 px-6">
+        <div class="container mx-auto max-w-2xl text-center">
+            <h2 class="section-title gradient-text">Let's Work Together</h2>
+            <p class="text-xl text-gray-300 mb-12">
+                Ready to create something extraordinary? Let's collaborate on your next project.
+            </p>
+            <div class="space-y-6">
+                <a href="mailto:rajathhebbar255@gmail.com" class="block bg-gradient-to-r from-purple-600 to-pink-600 px-8 py-4 rounded-full text-white font-semibold hover:shadow-lg transform hover:scale-105 transition-all duration-300">
+                    Get In Touch
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-black bg-opacity-80 py-8 px-6">
+        <div class="container mx-auto text-center">
+            <div class="flex justify-center items-center space-x-8 mb-6">
+                <a href="mailto:rajath.hebbar@example.com" class="text-gray-400 hover:text-white transition-colors duration-300">
+                    <i class="fas fa-envelope text-2xl"></i>
+                </a>
+                <a href="https://instagram.com/rajaththebbar" target="_blank" class="text-gray-400 hover:text-white transition-colors duration-300">
+                    <i class="fab fa-instagram text-2xl"></i>
+                </a>
+            </div>
+            <div class="text-gray-500 space-y-2">
+                <p>rajathhebbar255@gmail.com</p>
+                <p>© 2024 Rajath Hebbar. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Modal -->
+    <div id="imageModal" class="modal">
+        <span class="close-modal" onclick="closeModal()">&times;</span>
+        <div class="modal-content">
+            <img id="modalImage" src="" alt="" />
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
+
+```
